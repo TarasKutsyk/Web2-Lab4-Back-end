@@ -27,12 +27,10 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newPlanet = req.body;
+    let newPlanet = req.body;
 
-    await planetsModel.create(newPlanet);
-    const planets = await planetsModel.find();
-
-    res.json(planets);
+    newPlanet = await planetsModel.create(newPlanet);
+    res.json(newPlanet);
   } catch (e) {
     console.log('Planets POST error: ', e.message);
     res.status(400).send(e.message);

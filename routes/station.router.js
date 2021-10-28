@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newStation = req.body;
+    let newStation = req.body;
 
     if (newStation.planetLocation) {
       const isPlanetValid = await doesPlanetExist(newStation.planetLocation);
@@ -41,10 +41,8 @@ router.post('/', async (req, res) => {
       }
     }
 
-    await stationsModel.create(newStation);
-    const stations = await stationsModel.find();
-
-    res.json(stations);
+    newStation = await stationsModel.create(newStation);
+    res.json(newStation);
   } catch (e) {
     console.log('stations POST error: ', e.message);
     res.status(400).send(e.message);

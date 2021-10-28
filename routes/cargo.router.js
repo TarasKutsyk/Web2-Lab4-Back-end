@@ -60,7 +60,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newCargo = req.body;
+    let newCargo = req.body;
     const {planetDestination: cargoPlanet, stationDestination: cargoStation} = newCargo;
 
     if (cargoPlanet) {
@@ -73,10 +73,9 @@ router.post('/', async (req, res) => {
       await validateStation(cargoStation);
     }
 
-    await cargosModel.create(newCargo);
-    const cargos = await cargosModel.find();
+    newCargo = await cargosModel.create(newCargo);
 
-    res.json(cargos);
+    res.json(newCargo);
   } catch (e) {
     console.log('cargoes POST error: ', e.message);
     res.status(400).send(e.message);
